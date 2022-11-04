@@ -23,7 +23,7 @@ class MyVector{
         void push_back(type);
         //on ne peut pas faire v1= v.push_back()
         type pop_back();
-        
+        int GetCapacity() const;
 
 
     private:
@@ -56,6 +56,9 @@ MyVector::~MyVector(){
     ptr=nullptr;
 
 }
+int MyVector::GetCapacity() const{
+    return capacity;
+}
 
 ostream& operator<< (ostream& os, const MyVector& v){
     os << "{";
@@ -81,6 +84,19 @@ void MyVector::push_back(type a){
     size++;
 }
 
+type MyVector::pop_back(){
+    type a= ptr[size-1];
+    size --;
+    if (capacity >= size*4){
+        type* old =ptr;
+        capacity /=2;
+        ptr = new type [capacity];
+        memcpy(ptr,old,size*sizeof(type));
+        delete [] old;
+    }
+    return a;
+}
+
 
 int main(){
     type tab[] ={1,2,3,4,5};
@@ -88,5 +104,17 @@ int main(){
     cout << "v1= " << v1 << endl;
     v1.push_back(6);
     cout << v1 << endl;
+    type a=v1.pop_back();
+    cout << a << endl;
+    type b= v1.pop_back();
+    cout << b << endl;
+    type c= v1.pop_back();
+    cout << c << endl;
+    type d= v1.pop_back();
+    cout << d << endl;
+    type e= v1.pop_back();
+    cout << e << endl;
+    cout << "v1= " << v1 << endl;
+    cout << v1.GetCapacity() << endl;
     return 0;
 }
